@@ -1,11 +1,12 @@
 
-# WebSocket demo
+# WebSocket Typescript demo
 
 The WebSocket API allows you to to maintain a continuous two-way connection between client and server.
 Messages can be sent and received on both ends.
 
 ```bash
 npm install
+npm run build
 npm start
 open http://localhost:8080/
 ```
