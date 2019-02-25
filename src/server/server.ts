@@ -9,24 +9,24 @@ export default class AppServer {
         server.listen(8080, '127.0.0.1');
 
         const wss: WSS = new WSS({port: 8081});
-        wss.on('connection', function (socket) {
+        wss.on('connection', socket => {
             console.log('Opened Connection 🎉');
 
             let json: string = JSON.stringify({message: 'Gotcha'});
             socket.send(json);
             console.log('Sent: ' + json);
 
-            socket.on('message', function (message) {
+            socket.on('message', message => {
                 console.log('Received: ' + message);
 
-                wss.clients.forEach(function each(client) {
+                wss.clients.forEach(client => {
                     let json = JSON.stringify({message: 'Something changed'});
                     client.send(json);
                     console.log('Sent: ' + json);
                 });
             });
 
-            socket.on('close', function () {
+            socket.on('close', () => {
                 console.log('Closed Connection 😱');
             });
 
@@ -37,11 +37,12 @@ export default class AppServer {
                 message: 'Hello hello!'
             });
 
-            wss.clients.forEach(function each(client) {
+            wss.clients.forEach(client => {
                 client.send(json);
                 console.log('Sent: ' + json);
             });
         };
+
         setInterval(broadcast, 3000);
     }
 }

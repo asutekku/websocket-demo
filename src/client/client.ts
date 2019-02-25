@@ -2,44 +2,45 @@ export default class App {
 
     public static init() {
         const socket = new WebSocket('ws://localhost:8081/');
-        socket.onopen = function (events) {
-            log('Opened connection 🎉');
-            var json = JSON.stringify({message: 'Hello'});
+
+        socket.onopen = () => {
+            App.log('Opened connection 🎉');
+            let json: string = JSON.stringify({message: 'Hello'});
             socket.send(json);
-            log('Sent: ' + json);
-        }
-
-        socket.onerror = function (event) {
-            log('Error: ' + JSON.stringify(event));
-        }
-
-        socket.onmessage = function (event) {
-            log('Received: ' + event.data);
-        }
-
-        socket.onclose = function (event) {
-            log('Closed connection 😱');
-        }
-
-        document.querySelector('#close')!.addEventListener('click', function (event) {
-            socket.close();
-            log('Closed connection 😱');
-        });
-
-        document.querySelector('#send')!.addEventListener('click', function (event) {
-            var json = JSON.stringify({message: 'Hey there'});
-            socket.send(json);
-            log('Sent: ' + json);
-        });
-
-        const log = function (text: string) {
-            var li = document.createElement('li');
-            li.innerHTML = text;
-            document.getElementById('log')!.appendChild(li);
+            App.log('Sent: ' + json);
         };
 
-        window.addEventListener('beforeunload', function () {
+        socket.onerror = (event: any) => {
+            App.log('Error: ' + JSON.stringify(event));
+        };
+
+        socket.onmessage = (event: any) => {
+            App.log('Received: ' + event.data);
+        };
+
+        socket.onclose = () => {
+            App.log('Closed connection 😱');
+        };
+
+        document.querySelector('#close')!.addEventListener('click', () => {
+            socket.close();
+            App.log('Closed connection 😱');
+        });
+
+        document.querySelector('#send')!.addEventListener('click', () => {
+            let json: string = JSON.stringify({message: 'Hey there'});
+            socket.send(json);
+            App.log('Sent: ' + json);
+        });
+
+        window.addEventListener('beforeunload', () => {
             socket.close();
         });
+    }
+
+    static log(text: string): void {
+        let li = document.createElement('li');
+        li.textContent = text;
+        document.getElementById('log')!.appendChild(li);
     }
 }
